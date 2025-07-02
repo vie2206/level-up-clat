@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LEVEL UP - Legalight CLAT Platform</title>
+    <meta name="description" content="Professional CLAT preparation platform with mock test analytics, progress tracking, and leaderboard system.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
     <style>
         * {
             margin: 0;
@@ -12,48 +14,221 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* 🔐 LOGIN SCREEN STYLES */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-width: 450px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+
+        .auth-card h1 {
+            font-size: 3em;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .auth-card .tagline {
+            color: #4a5568;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .auth-card .subtitle {
+            color: #718096;
+            font-size: 1em;
+            margin-bottom: 40px;
+        }
+
+        .google-login-btn {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 18px 36px;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+        }
+
+        .google-login-btn:hover {
+            background: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(66, 133, 244, 0.4);
+        }
+
+        .auth-features {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #718096;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .auth-features span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* LOADING STATES */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            color: white;
+            font-size: 1.2em;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* USER HEADER */
+        .user-header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.7);
+        }
+
+        .user-details h3 {
+            font-size: 1.1em;
+            margin-bottom: 2px;
+        }
+
+        .user-stats {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 25px;
+            display: none;
+        }
+
+        .container.show {
+            display: block;
         }
 
         .header {
             background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 15px;
+            padding: 30px;
+            border-radius: 20px;
             margin-bottom: 30px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .logo {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #4a5568;
+            font-size: 2.8em;
+            font-weight: 800;
+            color: #2d3748;
             margin-bottom: 10px;
         }
 
         .tagline {
+            color: #4a5568;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .dashboard-subtitle {
             color: #718096;
-            font-size: 1.1em;
+            font-size: 1em;
+            margin-top: 10px;
         }
 
         .nav-tabs {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 12px;
+            margin: 25px 0;
             flex-wrap: wrap;
         }
 
         .tab-btn {
-            padding: 12px 24px;
+            padding: 14px 28px;
             background: rgba(255, 255, 255, 0.9);
             border: none;
             border-radius: 25px;
@@ -61,13 +236,15 @@
             font-weight: 600;
             transition: all 0.3s ease;
             color: #4a5568;
+            font-size: 0.95em;
+            backdrop-filter: blur(10px);
         }
 
         .tab-btn:hover, .tab-btn.active {
             background: #4299e1;
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(66, 153, 225, 0.4);
+            box-shadow: 0 8px 25px rgba(66, 153, 225, 0.3);
         }
 
         .tab-content {
@@ -80,11 +257,12 @@
 
         .card {
             background: rgba(255, 255, 255, 0.95);
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
         .card:hover {
@@ -93,13 +271,14 @@
 
         .card h3 {
             color: #2d3748;
-            margin-bottom: 15px;
-            font-size: 1.3em;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 700;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -107,59 +286,28 @@
         .stat-card {
             background: linear-gradient(135deg, #4299e1, #3182ce);
             color: white;
-            padding: 20px;
-            border-radius: 15px;
+            padding: 25px;
+            border-radius: 18px;
             text-align: center;
             transition: transform 0.3s ease;
+            box-shadow: 0 8px 25px rgba(66, 153, 225, 0.3);
         }
 
         .stat-card:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) translateY(-3px);
         }
 
         .stat-value {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 5px;
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 8px;
         }
 
-        .leaderboard {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        .stat-label {
+            font-size: 0.95em;
+            opacity: 0.9;
+            font-weight: 500;
         }
-
-        .leaderboard-header {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .leaderboard-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid #e2e8f0;
-            transition: background 0.3s ease;
-        }
-
-        .leaderboard-item:hover {
-            background: #f7fafc;
-        }
-
-        .rank {
-            font-weight: bold;
-            font-size: 1.2em;
-            color: #4299e1;
-            min-width: 40px;
-        }
-
-        .rank.gold { color: #ffd700; }
-        .rank.silver { color: #c0c0c0; }
-        .rank.bronze { color: #cd7f32; }
 
         .form-group {
             margin-bottom: 20px;
@@ -167,18 +315,20 @@
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: 600;
             color: #2d3748;
+            font-size: 0.95em;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px;
+            padding: 14px 16px;
             border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1em;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            background: white;
         }
 
         .form-control:focus {
@@ -187,167 +337,201 @@
             box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
         }
 
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
         .btn {
-            padding: 12px 24px;
+            padding: 14px 28px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
-            text-align: center;
+            font-size: 1em;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, #4299e1, #3182ce);
             color: white;
+            box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(66, 153, 225, 0.4);
+            box-shadow: 0 8px 25px rgba(66, 153, 225, 0.4);
         }
 
         .btn-success {
             background: linear-gradient(135deg, #48bb78, #38a169);
             color: white;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
         }
 
-        .btn-warning {
-            background: linear-gradient(135deg, #ed8936, #dd6b20);
-            color: white;
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #e2e8f0;
-            border-radius: 10px;
+        .leaderboard {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
             overflow: hidden;
-            margin: 10px 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
         }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #48bb78, #38a169);
-            transition: width 0.5s ease;
-        }
-
-        .college-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .college-card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .college-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .college-name {
-            font-weight: bold;
-            color: #2d3748;
-            margin-bottom: 10px;
-        }
-
-        .college-location {
-            color: #718096;
-            margin-bottom: 15px;
-        }
-
-        .admission-chance {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
+        .leaderboard-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
             text-align: center;
-            margin: 10px 0;
         }
 
-        .chance-high { background: #c6f6d5; color: #22543d; }
-        .chance-medium { background: #feebc8; color: #c05621; }
-        .chance-low { background: #fed7d7; color: #c53030; }
+        .leaderboard-header h3 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
 
-        .streak-indicator {
-            display: inline-flex;
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            background: linear-gradient(135deg, #ff6b6b, #ff5722);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            margin: 5px;
+            padding: 18px 25px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.3s ease;
         }
 
-        .badge {
-            display: inline-block;
-            padding: 6px 12px;
-            background: #4299e1;
-            color: white;
-            border-radius: 15px;
-            font-size: 0.8em;
-            font-weight: 600;
-            margin: 5px;
+        .leaderboard-item:hover {
+            background: #f8fafc;
         }
 
-        .notification {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank {
+            font-weight: 800;
+            font-size: 1.3em;
+            color: #4299e1;
+            min-width: 50px;
+        }
+
+        .rank.gold { color: #ffd700; }
+        .rank.silver { color: #c0c0c0; }
+        .rank.bronze { color: #cd7f32; }
+
+        .student-info {
+            flex: 1;
+            margin-left: 15px;
+        }
+
+        .student-name {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1.05em;
+        }
+
+        .student-email {
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        .student-stats {
+            text-align: right;
+            color: #4a5568;
+        }
+
+        .student-score {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #2d3748;
+        }
+
+        .test-history-item {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
             border-left: 4px solid #4299e1;
         }
 
-        .community-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
-        .community-stat {
+        .test-name {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1.1em;
+        }
+
+        .test-date {
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        .test-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .test-metric {
             text-align: center;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            color: white;
+            padding: 8px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .test-metric-value {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #2d3748;
+        }
+
+        .test-metric-label {
+            font-size: 0.85em;
+            color: #718096;
         }
 
         .hidden {
             display: none !important;
         }
 
-        .analysis-section {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 15px;
+        .success-message {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-weight: 600;
         }
 
-        .section-title {
-            color: #2d3748;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        .input-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
+        .error-message {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
         }
 
         @media (max-width: 768px) {
+            .auth-card {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
             .nav-tabs {
                 flex-direction: column;
                 align-items: center;
@@ -357,798 +541,530 @@
                 grid-template-columns: 1fr;
             }
             
-            .input-row {
+            .form-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .user-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .leaderboard-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .student-info {
+                margin-left: 0;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- 🔐 LOGIN SCREEN -->
+    <div id="loginScreen" class="auth-container">
+        <div class="auth-card">
+            <h1>🚀 LEVEL UP</h1>
+            <div class="tagline">Legalight's Complete CLAT Preparation Ecosystem</div>
+            <div class="subtitle">Join 70+ CLAT aspirants on their journey to success</div>
+            
+            <a href="#" class="google-login-btn" onclick="loginWithGoogle()">
+                <span>🔐</span>
+                Continue with Google
+            </a>
+            
+            <div class="auth-features">
+                <span>🔒 Secure login</span>
+                <span>📊 Track progress</span>
+                <span>🎯 Personalized analytics</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔄 LOADING SCREEN -->
+    <div id="loadingScreen" class="loading hidden">
+        <div class="spinner"></div>
+        <div>Authenticating with Google...</div>
+    </div>
+
+    <!-- 👤 USER HEADER -->
+    <div id="userHeader" class="user-header hidden">
+        <div class="user-info">
+            <img id="userAvatar" class="user-avatar" src="" alt="User">
+            <div class="user-details">
+                <h3 id="userName"></h3>
+                <div id="userStats" class="user-stats"></div>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- 📊 MAIN PLATFORM -->
+    <div id="mainContainer" class="container">
         <!-- Header -->
         <div class="header">
             <div class="logo">🚀 LEVEL UP</div>
             <div class="tagline">Legalight's Complete CLAT Preparation Ecosystem</div>
-            <div style="margin-top: 10px; color: #718096;">
-                <strong>Current Batch:</strong> 2026 | <strong>Total Students:</strong> 70
-            </div>
+            <div class="dashboard-subtitle">Your Personal Dashboard | Track Progress | Analyze Performance</div>
         </div>
+
+        <!-- Success/Error Messages -->
+        <div id="messageContainer"></div>
 
         <!-- Navigation -->
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="showTab('dashboard')">📊 Dashboard</button>
-            <button class="tab-btn" onclick="showTab('admin')">⚙️ Admin Panel</button>
-            <button class="tab-btn" onclick="showTab('student')">🎓 Student Portal</button>
-            <button class="tab-btn" onclick="showTab('analysis')">📈 Level Up Analysis</button>
+            <button class="tab-btn active" onclick="showTab('dashboard')">📊 My Dashboard</button>
+            <button class="tab-btn" onclick="showTab('analysis')">📋 Test Analysis</button>
+            <button class="tab-btn" onclick="showTab('leaderboard')">🏆 Leaderboard</button>
             <button class="tab-btn" onclick="showTab('community')">👥 Community</button>
-            <button class="tab-btn" onclick="showTab('colleges')">🏛️ College Predictor</button>
         </div>
 
         <!-- Dashboard Tab -->
         <div id="dashboard" class="tab-content active">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-value">70</div>
-                    <div>Total Students</div>
+                    <div class="stat-value" id="totalTests">0</div>
+                    <div class="stat-label">Mock Tests Taken</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">12</div>
-                    <div>Mock Tests</div>
+                    <div class="stat-value" id="averageScore">0</div>
+                    <div class="stat-label">Average Score</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">85%</div>
-                    <div>Active Users</div>
+                    <div class="stat-value" id="bestScore">0</div>
+                    <div class="stat-label">Best Score</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">25+</div>
-                    <div>Partner Colleges</div>
+                    <div class="stat-value" id="improvement">0</div>
+                    <div class="stat-label">Recent Improvement</div>
                 </div>
             </div>
 
-            <div class="leaderboard">
-                <div class="leaderboard-header">
-                    <h3>🏆 Live Leaderboard - Mock Test Rankings</h3>
-                </div>
-                <div class="leaderboard-item">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span class="rank gold">1</span>
-                        <div>
-                            <strong>Harshit</strong><br>
-                            <small>Karnataka • General</small>
-                        </div>
-                    </div>
-                    <div style="text-align: right;">
-                        <strong>101/120</strong><br>
-                        <small>🔥 7-day streak</small>
-                    </div>
-                </div>
-                <div class="leaderboard-item">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span class="rank silver">2</span>
-                        <div>
-                            <strong>Ayush</strong><br>
-                            <small>Bihar • OBC</small>
-                        </div>
-                    </div>
-                    <div style="text-align: right;">
-                        <strong>87/120</strong><br>
-                        <small>⚡ Fast improver</small>
-                    </div>
-                </div>
-                <div class="leaderboard-item">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span class="rank bronze">3</span>
-                        <div>
-                            <strong>Priya Sharma</strong><br>
-                            <small>Delhi • General</small>
-                        </div>
-                    </div>
-                    <div style="text-align: right;">
-                        <strong>82/120</strong><br>
-                        <small>📈 +15 improvement</small>
-                    </div>
-                </div>
-                <div class="leaderboard-item">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span class="rank">4</span>
-                        <div>
-                            <strong>Rahul Kumar</strong><br>
-                            <small>Uttar Pradesh • SC</small>
-                        </div>
-                    </div>
-                    <div style="text-align: right;">
-                        <strong>78/120</strong><br>
-                        <small>🎯 Consistent performer</small>
-                    </div>
-                </div>
-                <div class="leaderboard-item">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span class="rank">5</span>
-                        <div>
-                            <strong>Vivek</strong><br>
-                            <small>West Bengal • EWS</small>
-                        </div>
-                    </div>
-                    <div style="text-align: right;">
-                        <strong>43.25/120</strong><br>
-                        <small>💪 Room for growth</small>
-                    </div>
-                </div>
-            </div>
-
-            <div style="margin-top: 30px;">
-                <div class="card">
-                    <h3>📢 Live Activity Feed</h3>
-                    <div class="notification">
-                        <strong>Harshit</strong> just completed Mock Test 08 with 101/120! 🎉
-                        <div style="font-size: 0.9em; color: #718096; margin-top: 5px;">2 minutes ago</div>
-                    </div>
-                    <div class="notification">
-                        <strong>Community Alert:</strong> Average score increased to 67.5 this week!
-                        <div style="font-size: 0.9em; color: #718096; margin-top: 5px;">1 hour ago</div>
-                    </div>
-                    <div class="notification">
-                        <strong>Ayush</strong> achieved a 7-day analysis streak! 🔥
-                        <div style="font-size: 0.9em; color: #718096; margin-top: 5px;">3 hours ago</div>
-                    </div>
+            <div class="card">
+                <h3>📈 Your Progress Overview</h3>
+                <div id="progressChart">
+                    <p style="color: #718096; text-align: center; padding: 20px;">
+                        Your mock test journey will appear here as you submit more tests.
+                    </p>
+                    <div id="recentTests"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Admin Panel Tab -->
-        <div id="admin" class="tab-content">
+        <!-- Test Analysis Tab -->
+        <div id="analysis" class="tab-content">
             <div class="card">
-                <h3>📤 Upload Mock Test Results</h3>
+                <h3>📝 Submit New Mock Test Analysis</h3>
                 <div class="form-group">
                     <label>Mock Test Name</label>
-                    <input type="text" class="form-control" placeholder="e.g., Legalight Mock Test 08" id="mockName">
+                    <input type="text" class="form-control" id="testName" placeholder="e.g., Legalight Mock Test 08">
                 </div>
-                <div class="form-group">
-                    <label>Difficulty Level (compared to CLAT 2024/2025)</label>
-                    <select class="form-control" id="difficultyLevel">
-                        <option>Easier than CLAT 2024</option>
-                        <option>Similar to CLAT 2024</option>
-                        <option>Harder than CLAT 2024</option>
-                        <option>Similar to CLAT 2025</option>
-                        <option>Harder than CLAT 2025</option>
-                    </select>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Score (out of 120)</label>
+                        <input type="number" class="form-control" id="score" min="0" max="120" placeholder="85">
+                    </div>
+                    <div class="form-group">
+                        <label>Attempted</label>
+                        <input type="number" class="form-control" id="attempted" min="0" max="120" placeholder="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Correct</label>
+                        <input type="number" class="form-control" id="correct" min="0" max="120" placeholder="85">
+                    </div>
+                    <div class="form-group">
+                        <label>Incorrect</label>
+                        <input type="number" class="form-control" id="incorrect" min="0" max="120" placeholder="15">
+                    </div>
                 </div>
-                <button class="btn btn-primary" onclick="uploadMockTest()">📤 Upload Mock Test</button>
+                <button class="btn btn-primary" onclick="submitMockTest()">💾 Save Analysis & Update Progress</button>
             </div>
 
             <div class="card">
-                <h3>👥 Student Score Management</h3>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label>Student Name</label>
-                        <input type="text" class="form-control" id="studentName" placeholder="Enter student name">
-                    </div>
-                    <div class="form-group">
-                        <label>Attempted (out of 120)</label>
-                        <input type="number" class="form-control" id="attempted" min="0" max="120">
-                    </div>
-                    <div class="form-group">
-                        <label>Correct Answers</label>
-                        <input type="number" class="form-control" id="correct" min="0" max="120">
-                    </div>
-                    <div class="form-group">
-                        <label>Incorrect Answers</label>
-                        <input type="number" class="form-control" id="incorrect" min="0" max="120">
-                    </div>
-                </div>
-                <div style="margin: 15px 0; padding: 15px; background: #f7fafc; border-radius: 8px;">
-                    <strong>Final Score:</strong> <span id="calculatedScore">0</span>/120
-                    <div style="font-size: 0.9em; color: #718096; margin-top: 5px;">
-                        Formula: Correct - (Incorrect × 0.25)
-                    </div>
-                </div>
-                <button class="btn btn-success" onclick="addStudentScore()">✅ Add Student Score</button>
-            </div>
-
-            <div class="card">
-                <h3>📊 Batch Analytics</h3>
-                <div class="community-stats">
-                    <div class="community-stat" style="background: linear-gradient(135deg, #48bb78, #38a169);">
-                        <div style="font-size: 1.5em; font-weight: bold;">72.3</div>
-                        <div>Average Score</div>
-                    </div>
-                    <div class="community-stat" style="background: linear-gradient(135deg, #4299e1, #3182ce);">
-                        <div style="font-size: 1.5em; font-weight: bold;">85%</div>
-                        <div>Analysis Rate</div>
-                    </div>
-                    <div class="community-stat" style="background: linear-gradient(135deg, #ed8936, #dd6b20);">
-                        <div style="font-size: 1.5em; font-weight: bold;">23</div>
-                        <div>Students with 5+ Streak</div>
-                    </div>
+                <h3>📊 Your Test History</h3>
+                <div id="testHistory">
+                    <p style="color: #718096; text-align: center; padding: 20px;">
+                        Your submitted mock tests will appear here...
+                    </p>
                 </div>
             </div>
         </div>
 
-        <!-- Student Portal Tab -->
-        <div id="student" class="tab-content">
-            <div class="card">
-                <h3>🎓 Student Profile Setup</h3>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label>Select Student</label>
-                        <select class="form-control" id="studentSelect" onchange="loadStudentProfile()">
-                            <option value="">Select a student...</option>
-                            <option value="vivek">Vivek (EWS, West Bengal)</option>
-                            <option value="ayush">Ayush (OBC, Bihar)</option>
-                            <option value="harshit">Harshit (General, Karnataka)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>State Domicile</label>
-                        <select class="form-control" id="stateSelect">
-                            <option>West Bengal</option>
-                            <option>Bihar</option>
-                            <option>Karnataka</option>
-                            <option>Delhi</option>
-                            <option>Maharashtra</option>
-                            <option>Uttar Pradesh</option>
-                            <option>Tamil Nadu</option>
-                            <option>Rajasthan</option>
-                        </select>
-                    </div>
+        <!-- Leaderboard Tab -->
+        <div id="leaderboard" class="tab-content">
+            <div class="leaderboard">
+                <div class="leaderboard-header">
+                    <h3>🏆 CLAT 2026 Batch Leaderboard</h3>
+                    <p>Top performers based on average mock test scores</p>
                 </div>
-                <button class="btn btn-primary" onclick="generatePredictions()">🎯 Generate Rank Predictions</button>
-            </div>
-
-            <div id="studentResults" class="hidden">
-                <div class="card">
-                    <h3>📊 Your Latest Mock Performance</h3>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-value" id="studentScore">87</div>
-                            <div>Your Score</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="communityAvg">67.5</div>
-                            <div>Community Average</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="yourRank">2</div>
-                            <div>Your Rank</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="improvement">+12</div>
-                            <div>Improvement</div>
+                <div id="leaderboardList">
+                    <div class="leaderboard-item">
+                        <div class="rank">1</div>
+                        <div class="student-info">
+                            <div class="student-name">Loading leaderboard...</div>
                         </div>
                     </div>
                 </div>
-
-                <div class="card">
-                    <h3>🏆 Your Achievements</h3>
-                    <div style="margin: 15px 0;">
-                        <span class="badge">🔥 5-Day Streak</span>
-                        <span class="badge">📈 Fast Improver</span>
-                        <span class="badge">🎯 80+ Scorer</span>
-                        <span class="badge">⚡ Quick Analyzer</span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>🎯 Multi-Category Rank Predictions</h3>
-                    <div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                        <strong>Based on your score and category, here are your predicted ranks:</strong>
-                    </div>
-                    <div class="input-row">
-                        <div>
-                            <strong>All India Ranks:</strong><br>
-                            🏛️ General: ~3,200<br>
-                            👥 OBC: ~890<br>
-                            💪 Your Category: ~890
-                        </div>
-                        <div>
-                            <strong>State Ranks (Bihar):</strong><br>
-                            🏛️ General: ~145<br>
-                            👥 OBC-BR: ~67<br>
-                            🎯 EBC-BR: ~23
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Level Up Analysis Tab -->
-        <div id="analysis" class="tab-content">
-            <div class="analysis-section">
-                <h3 class="section-title">📋 Part I: Pre-Mock Planning</h3>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label>Mock Test Date</label>
-                        <input type="date" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Target Score (/120)</label>
-                        <input type="number" class="form-control" min="0" max="120">
-                    </div>
-                    <div class="form-group">
-                        <label>Strategy Theme</label>
-                        <input type="text" class="form-control" placeholder="e.g., Focus on Legal Reasoning">
-                    </div>
-                </div>
-            </div>
-
-            <div class="analysis-section">
-                <h3 class="section-title">📊 Part II: Performance Analysis</h3>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label>English Language (/24)</label>
-                        <input type="number" class="form-control" min="0" max="24">
-                    </div>
-                    <div class="form-group">
-                        <label>Current Affairs (/28)</label>
-                        <input type="number" class="form-control" min="0" max="28">
-                    </div>
-                    <div class="form-group">
-                        <label>Legal Reasoning (/32)</label>
-                        <input type="number" class="form-control" min="0" max="32">
-                    </div>
-                    <div class="form-group">
-                        <label>Logical Reasoning (/24)</label>
-                        <input type="number" class="form-control" min="0" max="24">
-                    </div>
-                    <div class="form-group">
-                        <label>Quantitative Techniques (/12)</label>
-                        <input type="number" class="form-control" min="0" max="12">
-                    </div>
-                </div>
-            </div>
-
-            <div class="analysis-section">
-                <h3 class="section-title">🧠 Part III: Psychological Analysis</h3>
-                <div class="form-group">
-                    <label>Confidence Level (1-10)</label>
-                    <input type="range" class="form-control" min="1" max="10" value="5" oninput="updateConfidence(this.value)">
-                    <div style="text-align: center; margin-top: 5px;">
-                        <span id="confidenceValue">5</span>/10
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Time Management (1-10)</label>
-                    <input type="range" class="form-control" min="1" max="10" value="5" oninput="updateTimeManagement(this.value)">
-                    <div style="text-align: center; margin-top: 5px;">
-                        <span id="timeValue">5</span>/10
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Stress Level During Test (1-10)</label>
-                    <input type="range" class="form-control" min="1" max="10" value="5" oninput="updateStress(this.value)">
-                    <div style="text-align: center; margin-top: 5px;">
-                        <span id="stressValue">5</span>/10
-                    </div>
-                </div>
-            </div>
-
-            <div class="analysis-section">
-                <h3 class="section-title">🎯 Part IV: Strategic Recommendations</h3>
-                <div id="recommendations" style="background: #f7fafc; padding: 20px; border-radius: 8px;">
-                    <p><strong>AI-Powered Recommendations will appear here based on your inputs:</strong></p>
-                    <ul style="margin-top: 10px; padding-left: 20px;">
-                        <li>Focus areas based on community performance data</li>
-                        <li>Time allocation strategies for next mock</li>
-                        <li>Specific topics to prioritize</li>
-                        <li>Stress management techniques</li>
-                    </ul>
-                </div>
-                <button class="btn btn-success" onclick="generateRecommendations()" style="margin-top: 15px;">
-                    🚀 Generate AI Recommendations
-                </button>
-            </div>
-
-            <div class="analysis-section">
-                <h3 class="section-title">📈 Part V: Next Mock Planning</h3>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label>Next Mock Date</label>
-                        <input type="date" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Target Improvement</label>
-                        <input type="number" class="form-control" placeholder="Points to improve">
-                    </div>
-                </div>
-                <button class="btn btn-primary" onclick="saveAnalysis()">💾 Save Complete Analysis</button>
             </div>
         </div>
 
         <!-- Community Tab -->
         <div id="community" class="tab-content">
             <div class="card">
-                <h3>👥 Community Intelligence Dashboard</h3>
-                <div class="community-stats">
-                    <div class="community-stat" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                        <div style="font-size: 1.5em; font-weight: bold;">67.5</div>
-                        <div>Community Average</div>
-                    </div>
-                    <div class="community-stat" style="background: linear-gradient(135deg, #48bb78, #38a169);">
-                        <div style="font-size: 1.5em; font-weight: bold;">23</div>
-                        <div>Active Streaks</div>
-                    </div>
-                    <div class="community-stat" style="background: linear-gradient(135deg, #ed8936, #dd6b20);">
-                        <div style="font-size: 1.5em; font-weight: bold;">Q47</div>
-                        <div>Hardest Question</div>
-                    </div>
-                    <div class="community-stat" style="background: linear-gradient(135deg, #4299e1, #3182ce);">
-                        <div style="font-size: 1.5em; font-weight: bold;">2.3</div>
-                        <div>Avg. Daily Mocks</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>📊 Latest Mock - Community Performance</h3>
-                <div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                    <strong>Mock Test 08 Community Insights:</strong>
-                </div>
-                <div class="input-row">
-                    <div>
-                        <h4>📈 Section-wise Community Performance:</h4>
-                        <div style="margin: 10px 0;">
-                            <div style="display: flex; justify-content: space-between; margin: 5px 0;">
-                                <span>English Language:</span>
-                                <span><strong>16.8/24</strong> (70%)</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 70%;"></div>
-                            </div>
-                        </div>
-                        <div style="margin: 10px 0;">
-                            <div style="display: flex; justify-content: space-between; margin: 5px 0;">
-                                <span>Current Affairs:</span>
-                                <span><strong>18.2/28</strong> (65%)</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 65%;"></div>
-                            </div>
-                        </div>
-                        <div style="margin: 10px 0;">
-                            <div style="display: flex; justify-content: space-between; margin: 5px 0;">
-                                <span>Legal Reasoning:</span>
-                                <span><strong>19.2/32</strong> (60%)</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 60%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <h4>🎯 Most Challenging Questions:</h4>
-                        <div style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                            <div style="margin: 8px 0;">
-                                <strong>Q47 (Legal Reasoning):</strong><br>
-                                Success Rate: <span style="color: #c53030;">23%</span><br>
-                                Avg Time: <span style="color: #ed8936;">4.2 min</span>
-                            </div>
-                            <div style="margin: 8px 0;">
-                                <strong>Q23 (Current Affairs):</strong><br>
-                                Success Rate: <span style="color: #c53030;">31%</span><br>
-                                Avg Time: <span style="color: #ed8936;">2.8 min</span>
-                            </div>
-                            <div style="margin: 8px 0;">
-                                <strong>Q78 (Logical Reasoning):</strong><br>
-                                Success Rate: <span style="color: #ed8936;">45%</span><br>
-                                Avg Time: <span style="color: #48bb78;">1.9 min</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>🏆 Community Success Patterns</h3>
-                <div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                    <h4>📈 What Top Performers Do Differently:</h4>
-                    <ul style="margin-top: 10px; padding-left: 20px;">
-                        <li><strong>Mock Frequency:</strong> Top 10% attempt mocks every 2-3 days</li>
-                        <li><strong>Analysis Habits:</strong> 95% complete Level Up analysis within 2 hours</li>
-                        <li><strong>Study Time Distribution:</strong> 35% Legal Reasoning, 25% Current Affairs, 20% English</li>
-                        <li><strong>Improvement Strategy:</strong> Focus on weakest section for 2 weeks, then diversify</li>
-                        <li><strong>Peak Performance Time:</strong> Most high scores happen in morning attempts (9-11 AM)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>🔥 Weekly Challenges</h3>
-                <div class="notification">
-                    <strong>This Week's Challenge:</strong> Improve Legal Reasoning by 5 points
-                    <div style="margin-top: 10px;">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 68%;"></div>
-                        </div>
-                        <div style="font-size: 0.9em; color: #718096; margin-top: 5px;">
-                            48/70 students participating • 32 students achieved target
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- College Predictor Tab -->
-        <div id="colleges" class="tab-content">
-            <div class="card">
-                <h3>🎯 College Admission Predictor</h3>
-                <p style="color: #718096; margin-bottom: 20px;">
-                    Based on your mock performance and historical CLAT data, here are your admission chances:
-                </p>
-
-                <div class="college-grid">
-                    <div class="college-card">
-                        <div class="college-name">National Law School of India University (NLSIU)</div>
-                        <div class="college-location">📍 Bengaluru, Karnataka</div>
-                        <div class="admission-chance chance-low">
-                            <strong>12% Admission Chance</strong>
-                        </div>
-                        <div style="font-size: 0.9em; color: #718096;">
-                            Need: ~15-20 points improvement<br>
-                            2025 Cutoff (General): Rank 1-100
-                        </div>
-                    </div>
-
-                    <div class="college-card">
-                        <div class="college-name">Chanakya National Law University (CNLU)</div>
-                        <div class="college-location">📍 Patna, Bihar</div>
-                        <div class="admission-chance chance-high">
-                            <strong>78% Admission Chance</strong>
-                        </div>
-                        <div style="font-size: 0.9em; color: #718096;">
-                            Strong match for your profile<br>
-                            2025 Cutoff (OBC-BR): Rank 2000-3000
-                        </div>
-                    </div>
-
-                    <div class="college-card">
-                        <div class="college-name">West Bengal National University of Juridical Sciences</div>
-                        <div class="college-location">📍 Kolkata, West Bengal</div>
-                        <div class="admission-chance chance-medium">
-                            <strong>45% Admission Chance</strong>
-                        </div>
-                        <div style="font-size: 0.9em; color: #718096;">
-                            State advantage available<br>
-                            2025 Cutoff (EWS): Rank 1500-2500
-                        </div>
-                    </div>
-
-                    <div class="college-card">
-                        <div class="college-name">Rajiv Gandhi National University of Law</div>
-                        <div class="college-location">📍 Punjab</div>
-                        <div class="admission-chance chance-high">
-                            <strong>82% Admission Chance</strong>
-                        </div>
-                        <div style="font-size: 0.9em; color: #718096;">
-                            Excellent fit for your score range<br>
-                            2025 Cutoff (General): Rank 3000-4000
-                        </div>
-                    </div>
-
-                    <div class="college-card">
-                        <div class="college-name">National Law Institute University</div>
-                        <div class="college-location">📍 Bhopal, Madhya Pradesh</div>
-                        <div class="admission-chance chance-high">
-                            <strong>89% Admission Chance</strong>
-                        </div>
-                        <div style="font-size: 0.9em; color: #718096;">
-                            Safe option with great academics<br>
-                            2025 Cutoff (OBC): Rank 4000-5000
-                        </div>
-                    </div>
-
-                    <div class="college-card">
-                        <div class="college-name">Dharmashastra National Law University</div>
-                        <div class="college-location">📍 Jabalpur, Madhya Pradesh</div>
-                        <div class="admission-chance chance-high">
-                            <strong>95% Admission Chance</strong>
-                        </div>
-                        <div style="font-size: 0.9em; color: #718096;">
-                            Strong safety option<br>
-                            2025 Cutoff (General): Rank 8000-10000
-                        </div>
-                    </div>
-                </div>
-
-                <div style="margin-top: 30px; background: #f7fafc; padding: 20px; border-radius: 15px;">
-                    <h4>🎯 Personalized Recommendations:</h4>
-                    <ul style="margin-top: 15px; padding-left: 20px;">
-                        <li><strong>Dream College:</strong> NLSIU - Need 15-20 point improvement</li>
-                        <li><strong>Target Colleges:</strong> CNLU, WBNUJS - Within reach with consistent performance</li>
-                        <li><strong>Safe Options:</strong> RGNUL, NLIU, MPDNLU - Strong admission chances</li>
-                        <li><strong>Strategy:</strong> Focus on Legal Reasoning and Current Affairs for maximum impact</li>
-                    </ul>
+                <h3>👥 Community Dashboard</h3>
+                <p style="margin-bottom: 25px;">Connect with fellow CLAT aspirants, share insights, and grow together!</p>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button class="btn btn-primary">Join Study Group</button>
+                    <button class="btn btn-success">Share Achievement</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Sample data
-        let students = [
-            { id: 'vivek', name: 'Vivek', category: 'EWS', state: 'West Bengal', score: 43.25 },
-            { id: 'ayush', name: 'Ayush', category: 'OBC', state: 'Bihar', score: 87 },
-            { id: 'harshit', name: 'Harshit', category: 'General', state: 'Karnataka', score: 101 }
-        ];
+        // 🔐 PRODUCTION AUTHENTICATION SYSTEM
+        class LevelUpAuth {
+            constructor() {
+                this.currentUser = null;
+                this.token = null;
+                // 🚨 YOUR ACTUAL BACKEND URL
+                this.backendURL = 'https://levelup-backend-api.onrender.com';
+                this.init();
+            }
 
-        let mockTests = [];
-        let currentStudent = null;
+            async init() {
+                this.showLoading();
+                
+                // Check URL parameters for OAuth callback
+                const urlParams = new URLSearchParams(window.location.search);
+                const token = urlParams.get('token');
+                const userParam = urlParams.get('user');
+                const error = urlParams.get('error');
 
-        // Tab functionality
+                if (error) {
+                    this.showError('Authentication failed. Please try again.');
+                    this.showLogin();
+                    return;
+                }
+
+                if (token && userParam) {
+                    // OAuth successful - save token and user
+                    this.token = token;
+                    this.currentUser = JSON.parse(decodeURIComponent(userParam));
+                    
+                    localStorage.setItem('levelup_token', token);
+                    localStorage.setItem('levelup_user', JSON.stringify(this.currentUser));
+                    
+                    // Clean URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
+                    this.showDashboard();
+                    await this.loadUserData();
+                    return;
+                }
+
+                // Check for existing login
+                const savedToken = localStorage.getItem('levelup_token');
+                const savedUser = localStorage.getItem('levelup_user');
+
+                if (savedToken && savedUser) {
+                    this.token = savedToken;
+                    this.currentUser = JSON.parse(savedUser);
+                    
+                    // Verify token is still valid
+                    try {
+                        await this.verifyToken();
+                        this.showDashboard();
+                        await this.loadUserData();
+                    } catch (error) {
+                        console.log('Token expired, redirecting to login');
+                        this.logout();
+                    }
+                } else {
+                    this.showLogin();
+                }
+            }
+
+            async verifyToken() {
+                const response = await fetch(`${this.backendURL}/api/user`, {
+                    headers: {
+                        'Authorization': `Bearer ${this.token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Token invalid');
+                }
+
+                const user = await response.json();
+                this.currentUser = user;
+                localStorage.setItem('levelup_user', JSON.stringify(user));
+            }
+
+            showLoading() {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('loadingScreen').classList.remove('hidden');
+                document.getElementById('userHeader').classList.add('hidden');
+                document.getElementById('mainContainer').classList.remove('show');
+            }
+
+            showLogin() {
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('loadingScreen').classList.add('hidden');
+                document.getElementById('userHeader').classList.add('hidden');
+                document.getElementById('mainContainer').classList.remove('show');
+            }
+
+            showDashboard() {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('loadingScreen').classList.add('hidden');
+                document.getElementById('userHeader').classList.remove('hidden');
+                document.getElementById('mainContainer').classList.add('show');
+                
+                if (this.currentUser) {
+                    this.updateUserHeader();
+                }
+            }
+
+            updateUserHeader() {
+                document.getElementById('userName').textContent = this.currentUser.name;
+                document.getElementById('userAvatar').src = this.currentUser.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(this.currentUser.name)}&background=4299e1&color=fff`;
+                document.getElementById('userStats').textContent = 
+                    `${this.currentUser.totalTests} tests • ${this.currentUser.averageScore} avg score`;
+            }
+
+            loginWithGoogle() {
+                this.showLoading();
+                // Redirect to backend Google OAuth
+                window.location.href = `${this.backendURL}/auth/google`;
+            }
+
+            async loadUserData() {
+                if (!this.currentUser || !this.token) return;
+
+                try {
+                    // Load user analytics
+                    const analyticsResponse = await fetch(`${this.backendURL}/api/analytics`, {
+                        headers: {
+                            'Authorization': `Bearer ${this.token}`
+                        }
+                    });
+                    
+                    if (analyticsResponse.ok) {
+                        const analytics = await analyticsResponse.json();
+                        this.updateDashboard(analytics);
+                        this.updateTestHistory(analytics.recentTests || []);
+                    }
+
+                    // Load leaderboard
+                    const leaderboardResponse = await fetch(`${this.backendURL}/api/leaderboard`);
+                    if (leaderboardResponse.ok) {
+                        const leaderboard = await leaderboardResponse.json();
+                        this.updateLeaderboard(leaderboard);
+                    }
+
+                } catch (error) {
+                    console.error('Error loading data:', error);
+                    this.showError('Failed to load data. Please refresh the page.');
+                }
+            }
+
+            updateDashboard(analytics) {
+                document.getElementById('totalTests').textContent = analytics.totalTests || 0;
+                document.getElementById('averageScore').textContent = analytics.averageScore || 0;
+                document.getElementById('bestScore').textContent = analytics.bestScore || 0;
+                document.getElementById('improvement').textContent = 
+                    (analytics.improvement > 0 ? '+' : '') + (analytics.improvement || 0);
+
+                // Update user header stats
+                if (this.currentUser) {
+                    this.currentUser.totalTests = analytics.totalTests;
+                    this.currentUser.averageScore = analytics.averageScore;
+                    this.updateUserHeader();
+                }
+            }
+
+            updateTestHistory(tests) {
+                const historyDiv = document.getElementById('testHistory');
+                if (tests.length === 0) {
+                    historyDiv.innerHTML = '<p style="color: #718096; text-align: center; padding: 20px;">No tests submitted yet. Submit your first mock test above!</p>';
+                    return;
+                }
+
+                historyDiv.innerHTML = tests.map(test => `
+                    <div class="test-history-item">
+                        <div class="test-header">
+                            <div class="test-name">${test.testName}</div>
+                            <div class="test-date">${new Date(test.date).toLocaleDateString()}</div>
+                        </div>
+                        <div class="test-details">
+                            <div class="test-metric">
+                                <div class="test-metric-value">${test.score}</div>
+                                <div class="test-metric-label">Score</div>
+                            </div>
+                            <div class="test-metric">
+                                <div class="test-metric-value">${test.accuracy}%</div>
+                                <div class="test-metric-label">Accuracy</div>
+                            </div>
+                            <div class="test-metric">
+                                <div class="test-metric-value">${test.attempted}</div>
+                                <div class="test-metric-label">Attempted</div>
+                            </div>
+                            <div class="test-metric">
+                                <div class="test-metric-value">${test.correct}</div>
+                                <div class="test-metric-label">Correct</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            updateLeaderboard(leaderboard) {
+                const leaderboardDiv = document.getElementById('leaderboardList');
+                if (leaderboard.length === 0) {
+                    leaderboardDiv.innerHTML = '<div class="leaderboard-item"><div class="student-name">No data available yet</div></div>';
+                    return;
+                }
+
+                leaderboardDiv.innerHTML = leaderboard.map(student => {
+                    let rankClass = '';
+                    if (student.rank === 1) rankClass = 'gold';
+                    else if (student.rank === 2) rankClass = 'silver';
+                    else if (student.rank === 3) rankClass = 'bronze';
+
+                    return `
+                        <div class="leaderboard-item">
+                            <div class="rank ${rankClass}">${student.rank}</div>
+                            <div class="student-info">
+                                <div class="student-name">${student.name}</div>
+                                <div class="student-email">${student.email}</div>
+                            </div>
+                            <div class="student-stats">
+                                <div class="student-score">${student.score}</div>
+                                <div style="font-size: 0.8em; color: #718096;">${student.tests} tests</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            async submitMockTest() {
+                const testData = {
+                    testName: document.getElementById('testName').value,
+                    score: parseInt(document.getElementById('score').value),
+                    attempted: parseInt(document.getElementById('attempted').value),
+                    correct: parseInt(document.getElementById('correct').value),
+                    incorrect: parseInt(document.getElementById('incorrect').value)
+                };
+
+                if (!testData.testName || !testData.score) {
+                    this.showError('Please fill in test name and score!');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${this.backendURL}/api/mock-test`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${this.token}`
+                        },
+                        body: JSON.stringify(testData)
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        this.showSuccess('✅ Mock test saved successfully!');
+                        
+                        // Update current user data
+                        if (result.user) {
+                            this.currentUser = { ...this.currentUser, ...result.user };
+                            localStorage.setItem('levelup_user', JSON.stringify(this.currentUser));
+                        }
+                        
+                        // Clear form
+                        document.getElementById('testName').value = '';
+                        document.getElementById('score').value = '';
+                        document.getElementById('attempted').value = '';
+                        document.getElementById('correct').value = '';
+                        document.getElementById('incorrect').value = '';
+
+                        // Reload data
+                        await this.loadUserData();
+                    } else {
+                        this.showError(result.error || 'Failed to save test');
+                    }
+                } catch (error) {
+                    console.error('Submit error:', error);
+                    this.showError('Failed to save test. Please check your connection and try again.');
+                }
+            }
+
+            showSuccess(message) {
+                const container = document.getElementById('messageContainer');
+                container.innerHTML = `<div class="success-message">${message}</div>`;
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 5000);
+            }
+
+            showError(message) {
+                const container = document.getElementById('messageContainer');
+                container.innerHTML = `<div class="error-message">${message}</div>`;
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 5000);
+            }
+
+            logout() {
+                localStorage.removeItem('levelup_token');
+                localStorage.removeItem('levelup_user');
+                this.currentUser = null;
+                this.token = null;
+                this.showLogin();
+            }
+        }
+
+        // Initialize authentication system
+        const auth = new LevelUpAuth();
+
+        // 🌟 GLOBAL FUNCTIONS
+        function loginWithGoogle() {
+            auth.loginWithGoogle();
+        }
+
+        function logout() {
+            auth.logout();
+        }
+
+        function submitMockTest() {
+            auth.submitMockTest();
+        }
+
         function showTab(tabName) {
-            // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(tab => tab.classList.remove('active'));
-
-            // Remove active class from all tab buttons
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-
-            // Show selected tab content
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
             document.getElementById(tabName).classList.add('active');
-
-            // Add active class to clicked button
+            
+            // Add active to clicked button
             event.target.classList.add('active');
         }
 
-        // Admin functions
-        function uploadMockTest() {
-            const mockName = document.getElementById('mockName').value;
-            const difficulty = document.getElementById('difficultyLevel').value;
-
-            if (mockName) {
-                mockTests.push({
-                    name: mockName,
-                    difficulty: difficulty,
-                    date: new Date().toISOString().split('T')[0]
-                });
-
-                alert(`✅ Mock test "${mockName}" uploaded successfully!`);
-                document.getElementById('mockName').value = '';
-            } else {
-                alert('Please enter a mock test name.');
-            }
-        }
-
-        function addStudentScore() {
-            const studentName = document.getElementById('studentName').value;
-            const attempted = parseInt(document.getElementById('attempted').value) || 0;
-            const correct = parseInt(document.getElementById('correct').value) || 0;
-            const incorrect = parseInt(document.getElementById('incorrect').value) || 0;
-
-            if (studentName && attempted > 0) {
-                const finalScore = correct - (incorrect * 0.25);
-                
-                alert(`✅ Score added for ${studentName}: ${finalScore}/120`);
-                
-                // Clear form
-                document.getElementById('studentName').value = '';
-                document.getElementById('attempted').value = '';
-                document.getElementById('correct').value = '';
-                document.getElementById('incorrect').value = '';
-                document.getElementById('calculatedScore').textContent = '0';
-            } else {
-                alert('Please fill in all required fields.');
-            }
-        }
-
-        // Real-time score calculation
-        function updateScore() {
-            const correct = parseInt(document.getElementById('correct').value) || 0;
-            const incorrect = parseInt(document.getElementById('incorrect').value) || 0;
-            const finalScore = Math.max(0, correct - (incorrect * 0.25));
-            document.getElementById('calculatedScore').textContent = finalScore.toFixed(2);
-        }
-
-        // Add event listeners for real-time calculation
+        // Initialize platform
         document.addEventListener('DOMContentLoaded', function() {
-            const correctInput = document.getElementById('correct');
-            const incorrectInput = document.getElementById('incorrect');
-            
-            if (correctInput) correctInput.addEventListener('input', updateScore);
-            if (incorrectInput) incorrectInput.addEventListener('input', updateScore);
-        });
-
-        // Student functions
-        function loadStudentProfile() {
-            const studentId = document.getElementById('studentSelect').value;
-            if (studentId) {
-                currentStudent = students.find(s => s.id === studentId);
-                if (currentStudent) {
-                    document.getElementById('stateSelect').value = currentStudent.state;
-                }
-            }
-        }
-
-        function generatePredictions() {
-            const studentId = document.getElementById('studentSelect').value;
-            if (!studentId) {
-                alert('Please select a student first.');
-                return;
-            }
-
-            currentStudent = students.find(s => s.id === studentId);
-            if (currentStudent) {
-                // Update student results display
-                document.getElementById('studentScore').textContent = currentStudent.score;
-                document.getElementById('communityAvg').textContent = '67.5';
-                
-                // Calculate rank based on score
-                const sortedStudents = students.sort((a, b) => b.score - a.score);
-                const rank = sortedStudents.findIndex(s => s.id === studentId) + 1;
-                document.getElementById('yourRank').textContent = rank;
-                
-                const improvement = Math.floor(Math.random() * 20) - 5; // Random improvement for demo
-                document.getElementById('improvement').textContent = improvement > 0 ? `+${improvement}` : improvement;
-
-                // Show results
-                document.getElementById('studentResults').classList.remove('hidden');
-            }
-        }
-
-        // Analysis functions
-        function updateConfidence(value) {
-            document.getElementById('confidenceValue').textContent = value;
-        }
-
-        function updateTimeManagement(value) {
-            document.getElementById('timeValue').textContent = value;
-        }
-
-        function updateStress(value) {
-            document.getElementById('stressValue').textContent = value;
-        }
-
-        function generateRecommendations() {
-            const recommendations = [
-                "🎯 Focus on Legal Reasoning - Community data shows 40% improvement potential",
-                "⏰ Allocate 3.5 minutes per Legal Reasoning question based on top performers",
-                "📚 Review Constitutional Law basics - 67% of errors in this topic",
-                "🧘‍♂️ Practice stress management - Your stress level is above community average",
-                "📈 Attempt mocks every 2-3 days - Optimal frequency for your improvement rate",
-                "💪 Strong in Current Affairs - Maintain this advantage over peers"
-            ];
-
-            const recommendationsHtml = recommendations.map(rec => `<li>${rec}</li>`).join('');
-            
-            document.getElementById('recommendations').innerHTML = `
-                <p><strong>🚀 AI-Generated Recommendations for You:</strong></p>
-                <ul style="margin-top: 15px; padding-left: 20px;">
-                    ${recommendationsHtml}
-                </ul>
-                <div style="margin-top: 15px; padding: 15px; background: #e6fffa; border-radius: 8px; border-left: 4px solid #38b2ac;">
-                    <strong>💡 Pro Tip:</strong> Based on similar student profiles, focusing on your weakest section for 2 weeks typically yields 8-12 point improvements.
-                </div>
-            `;
-        }
-
-        function saveAnalysis() {
-            alert('✅ Analysis saved successfully! Your insights have been added to the community database.');
-        }
-
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 LEVEL UP - Legalight CLAT Platform Loaded Successfully!');
-            
-            // Add some dynamic behavior
-            setInterval(() => {
-                // Simulate real-time updates (in a real app, this would be WebSocket data)
-                updateLiveActivity();
-            }, 30000); // Update every 30 seconds
-        });
-
-        function updateLiveActivity() {
-            // This would typically fetch real data from the server
-            console.log('📡 Updating live activity feed...');
-        }
-
-        // Add click handlers for better UX
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('college-card')) {
-                e.target.style.transform = 'scale(1.02)';
-                setTimeout(() => {
-                    e.target.style.transform = '';
-                }, 200);
-            }
+            console.log('🚀 LEVEL UP Production Platform Loaded with Real Google OAuth!');
         });
     </script>
 </body>
