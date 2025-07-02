@@ -1,7 +1,7 @@
 {
   "name": "level-up-clat",
   "version": "1.0.0",
-  "description": "Legalight CLAT Preparation Platform",
+  "description": "Legalight CLAT Platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
